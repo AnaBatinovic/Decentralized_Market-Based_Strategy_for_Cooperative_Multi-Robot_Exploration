@@ -2012,8 +2012,8 @@
 \fi
 
 % article class provides these, we should too.
-\newlength\abovecaptionskip
-\newlength\belowcaptionskip
+%\newlength\abovecaptionskip
+%\newlength\belowcaptionskip
 % but only \abovecaptionskip is used above figure captions and *below* table
 % captions
 \setlength\abovecaptionskip{0.5\baselineskip}

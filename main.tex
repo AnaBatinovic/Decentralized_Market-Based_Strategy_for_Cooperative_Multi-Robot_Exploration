@@ -1,4 +1,3 @@
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %2345678901234567890123456789012345678901234567890123456789012345678901234567890
 %        1         2         3         4         5         6         7         8
@@ -169,7 +168,7 @@ where $M$ is  the number of frontier points, and every list member is a vector w
 \end{bmatrix}.
 \end{equation}
 
-In this paper we define the weight as a function of the cost, utility and frontier occupancy.  $i$ is an ordinal number of the mobile robot, and $j$ is an ordinal number of the frontier point. The cost function: $C_{ij}$: $R$ \(\rightarrow \text{$\mathbb{R}^{+}$}\) is a mapping from the set of resources $R$ to a positive real number. $C_{ij}$ describes the cost of $i$th robot to visit $j$th frontier point. The cost can be the function of the time, energy, but in our case the cost is the estimated distance traveled by robot to reach the target frontier point. The estimated distance is approximated using Euclidean distance between the position of mobile robot \boldsymbol{p_{i}} and the frontier point position \boldsymbol{q_{j}}:
+In this paper we define the weight as a function of the cost, utility and frontier occupancy.  $i$ is an ordinal number of the mobile robot, and $j$ is an ordinal number of the frontier point. The cost function: $C_{ij}$: $R$ \(\rightarrow \text{$\mathbb{R}^{+}$}\) is a mapping from the set of resources $R$ to a positive real number. $C_{ij}$ describes the cost of $i$th robot to visit $j$th frontier point. The cost can be the function of the time, energy, but in our case the cost is the estimated distance traveled by robot to reach the target frontier point. The estimated distance is approximated using Euclidean distance between the position of mobile robot $\boldsymbol{p_{i}}$ and the frontier point position $\boldsymbol{q_{j}}$:
 \begin{equation}\small
     C_{ij}=d(\boldsymbol{p_{i}}, \boldsymbol{q_{j}}) = \sqrt{(p_{ix}-q_{jx})^{2}+(p_{iy}-q_{jy})^{2}+(p_{iz}-q_{jz})^{2}}.
     \label{cost}
@@ -200,7 +199,7 @@ For each frontier point $j$ weight $W_{ij}$ $i$-th mobile robot is calculated as
    \label{weight}
 \end{equation}
 
-The weight matrix \boldsymbol{W} \mathbb{($N\times M$)} is formed for $N$ mobile robots and $M$ received frontier points: 
+The weight matrix $\boldsymbol{W}$ ($N\times M$) is formed for $N$ mobile robots and $M$ received frontier points: 
 \begin{equation}
     \boldsymbol{W} = \begin{bmatrix}
     W_{00} & W_{01} & \hdots & W_{0j} & \hdots & W_{0M}\\
@@ -212,7 +211,7 @@ The weight matrix \boldsymbol{W} \mathbb{($N\times M$)} is formed for $N$ mobile
     \end{bmatrix}.
 \end{equation}
 Mobile robots exchange the information about the weight for the particular frontier point and make decisions for the future actions. Accordingly the amount of exchanging data is reduced, what result in easier and faster communication.
-The weight matrix \boldsymbol{W} represents the entry into the Hungarian algorithm which is able to find the optimal assignment solution in polynomial time \cite{hungarian}. 
+The weight matrix $\boldsymbol{W}$ represents the entry into the Hungarian algorithm which is able to find the optimal assignment solution in polynomial time \cite{hungarian}. 
 
 Let matrix $X$ be matrix of zeros and ones, where $X[i,j]=1$ iff the frontier point $j$ is assigned to the mobile robot $i$.
 Than the optimal task assignment has weight:
@@ -237,9 +236,10 @@ Our decentralized strategy is in progress during the robot's motion and there ar
 \State\hspace{\algorithmicindent} $W_{ij}$ = $C_{ij}$ - $U_{ij}$ + $F_{ij}$
 \State\hspace{\algorithmicindent} Send $W_{ij}$ to the other mobile robots.
 \State \hspace{\algorithmicindent} Receive the weights from the others.
-\State \hspace{\algorithmicindent} Calculate weight matrix \boldsymbol{W}.
-\State \hspace{\algorithmicindent} Hungarian algorithm (\boldsymbol{W}).
+\State \hspace{\algorithmicindent} Calculate weight matrix $\boldsymbol{W}$.
+\State \hspace{\algorithmicindent} Hungarian algorithm ($\boldsymbol{W}$).
 \State{\textbf{return} Frontier point is assigned to mobile robot $i$.}
+\EndFor
 \end{algorithmic}
 \end{algorithm}
 
@@ -267,19 +267,19 @@ The weight matrix $\boldsymbol{W}$ is an entry to Hungarian algorithm and the de
 	\begin{minipage}{0.3\columnwidth}
 		\centering
 		\includegraphics[width=\columnwidth]{free-space.png}
-		\captionoff{(a)}
+		\caption{(a)}
 		\label{fig:free}
 	\end{minipage}
 	\begin{minipage}{0.3\columnwidth}
 		\centering
 		\includegraphics[width=\columnwidth]{office.png}
-		\captionoff{(b)}
+		\caption{(b)}
 		\label{fig:office}
 	\end{minipage}
 	\begin{minipage}{0.3\columnwidth}
 		\centering
 		\includegraphics[width=\columnwidth]{unstructured.png}
-		\captionoff{(c)}
+		\caption{(c)}
 		\label{fig:unstructured}
 	\end{minipage}
  \caption{Simulation environments.}
@@ -324,7 +324,7 @@ multiple robots for planetary exploration, in Proc. of the Int. Conf. on Advance
 \bibitem{Yamauchi} B. Yamauchi, Frontier-based exploration using multiple robots, in
 Proc. of the Second International Conference on Autonomous Agents, pages 47–53, Minneapolis, MN, USA, 1998.
 
-\bibitem{market-economy} R. Zlot, A.T. Stenz, M.B. Dias, and S. Thayer, Multi-robot exploration controlled by a market economy, in Proc. of the IEEE Int. Conf. on Robotics & Automation (ICRA), Washington, DC, USA, 2002.
+\bibitem{market-economy} R. Zlot, A.T. Stenz, M.B. Dias, and S. Thayer, Multi-robot exploration controlled by a market economy, in Proc. of the IEEE Int. Conf. on Robotics and Automation (ICRA), Washington, DC, USA, 2002.
 
 \bibitem{rescue} R. Murphy, Human-robot interaction in rescue robotics, IEEE Syst., Man, Cybern., C, Appl. Rev., vol. 34, no. 2, pp. 138–153, May 2004.
 
