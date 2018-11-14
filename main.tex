@@ -25,7 +25,7 @@
 %\usepackage{amssymb}  % assumes amsmath package installed
 
 \title{\LARGE \bf
-Decentralized market-based strategy for cooperative multi-robot exploration 
+Decentralised market-based strategy for cooperative multi-robot exploration 
 }
 
 %\author{ \parbox{3 in}{\centering autor1*
@@ -72,15 +72,14 @@ This work presents a novel approach to multi-robot exploration and mapping of an
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
-Analysis and syntheses of decentralised multi-robot systems belong to core robotics problems that draw significant attention in last few decades. The coordination of a team of mobile robots to explore an unknown area is a complex problem used in several applications like rescue \cite{rescue}, cleaning \cite{cleaning1}, \cite{cleaning2}, or planetary exploration \cite{planetary}. Due to the fact that multi-robot systems also have a great application in the industry, the use of such systems becomes more and more inevitable. 
+Analysis and syntheses of decentralised multi-robot systems belong to core robotics problems that draw significant attention in last few decades. The coordination of a team of mobile robots that execute exploration missions of an unknown area is a common problem encountered in many applications, such as search and rescue \cite{rescue}, cleaning \cite{cleaning1}, \cite{cleaning2}, warehousing \cite{Wurman}, or planetary exploration \cite{planetary}, to number only few. Due to the fact that autonomous multi-robot systems are entering civil domain and as such will interact with people on daily basis, development of reliable coordination algorithms becomes inevitable.
 
-In this paper, we consider the problem of an unknown area exploration with multiple mobile robots using the decentralized coordination strategy based on market model. Like in the human world, robots can be more effective when they work together. Moreover, a robot team can accomplish a task quicker than a single robot can \cite{free-market}. Another advantage of robot teams arises from merging overlapping sensor information, which can help to compensate for sensor uncertainty \cite{segmentation}. Regarding the robustness of the system, using a multi-robot solution is the best option when a decentralized system is used. Even though the coordination is more difficult in this kind of systems \cite{Julia}, it is still easier then to get a group of uncoordinated individuals to work together smoothly.
-Coordination can lead to task accomplishment in the shortest possible time, increased robustness, higher map quality, and the completion of tasks impossible for single mobile robot \cite{survey-analysis}. 
+In this paper, we consider the problem of an unknown area exploration with multiple mobile robots using the decentralised coordination strategy based on market model. Like in the human world, robots can be more effective when they work together. Moreover, a robot team can accomplish a predefined task much quicker than a single robot can \cite{free-market}. Another advantage of robot teams arises from possibility to merge overlapping sensor information, which in turn can help to compensate for sensor uncertainty \cite{segmentation}. Regarding the robustness of the system, using a multi-robot solution is the best option when a decentralised system is used. Even though the coordination is more difficult in this kind of systems \cite{Julia}, it is still easier then to get a group of uncoordinated individual robots to work together smoothly.
+If done properly, coordination can lead to i) task accomplishment in the shortest possible time, ii) increased robustness, iii) higher map quality (in case of exploration task), and finally iv) the completion of tasks impossible for a single robot to perform \cite{survey-analysis}.
 
-Different centralized and decentralized task allocation algorithms have been proposed by researchers. Centralized task assignment for a multi-robot system is often not practical due to communication limits, robustness issues, slowness in algorithm execution and scalability, but using a decentralized approach can mitigate some of these problems. 
-In the centralized approach each robot has its own task that is assigned from a single central leader using one of the centralized planning algorithm. The central leader communicates with each robot in order to have an updated information about robot's pose and to assign a task to the robot after making a plan. Although achieving tight coordination typically requires that the mobile robots exchange large quantities of information about the environment and their current states, our decentralized strategy uses minimal information to ensure the negotiation in the market-model. It is assumed that all mobile robots communicate with each other all the time. We propose a new market-based strategy for task allocation in parallel with the task execution. 
+Different centralised and decentralised task allocation algorithms have been proposed by researchers \cite{Yamauchi}, \cite{burgard}, \cite{Simmons}, \cite{Sheng}, \cite{Konolige}. centralised task assignment for a multi-robot system is often not practical due to communication limits  \cite{free-market}, robustness issues \cite{survey-analysis}, time required for algorithm execution and scalability \cite{Julia}, but using a decentralised approach can mitigate some of these problems. In the centralised approach each robot has its own task that is assigned from a single central leader, using one of the centralised planning algorithm. The central leader communicates with each robot in order to receive an updated information about robot's pose and to assign a task to the robot after completion of a plan. Although achieving tight coordination typically requires that the mobile robots exchange large quantities of information about the environment and their current states, decentralised strategy proposed herein uses minimal information to ensure the negotiation in the market-model. It is assumed that communication between mobile robots is modelled by fully connected graph.  
 
-The initial motivation for our approach was to achieve faster exploration and better cooperation between mobile robots. Our market model insures that the mobile robots do not get too close to each other during the exploration. Moreover, the mobile robots are dispersed in the environment with the same goal, to accomplish the mission as fast as possible. If we image two mobile robots trying to reach the target point without cooperation, each of them will select the closest point to move to without considering what the other robot is doing. In order to avoid a conflicting assignment since both have selected the same task (Fig. \ref{fig:konflikt}), robot should cooperate. With cooperation robot Pioneer 1 will realize that robot Pioneer 2 is much closer to the first target point, and thus, better able to perform it. Similar problem is shown with UAVs in \cite{mit}. 
+Since the motivation was to achieve faster exploration and better cooperation between mobile robots, our market model insures that the mobile robots do not get too close to each other during the exploration. Moreover, the mobile robots are dispersed in the environment with the same goal, to accomplish the mission as fast as possible. If we image two mobile robots trying to reach the target point without cooperation, each of them will select the closest point to move to without considering what the other robot is doing. In order to avoid a conflicting assignment since both have selected the same task (Fig. \ref{fig:konflikt}), robot should cooperate. With cooperation robot Pioneer 1 will realize that robot Pioneer 2 is much closer to the first target point, and thus, better able to perform it. Similar problem is shown with UAVs in \cite{mit}. 
 
 \begin{figure}[b!]
 \minipage{0.16\textwidth}
@@ -97,24 +96,25 @@ The initial motivation for our approach was to achieve faster exploration and be
 \end{figure}  
 
 
-The rest of the paper is organized as follows. The related work is presented in the next section. In section III, an used exploration algorithm and a new exploration strategy based on market model is going to be explained. Simulation results are given in Section IV. In the final section conclusion will be given.
+The rest of the paper is organised as follows. The related work is presented in the next section. In section III, an used exploration algorithm and a new exploration strategy based on market model is going to be explained. Simulation results are given in Section IV. In the final section conclusion will be given.
 
 
 
 \section{RELATED WORK}
 
 
-Previous studies indicate that using central system for winner selection is not the best way for mobile robots coordination because this type of coordination models suffers from the single point of failure problem and complicated protocols \cite{Sheng}. Thus, there are several proposed, distributed bidding models for coordination of multiple mobile robots. 
+Previous studies of market-based models indicate that using central system for winner selection is not the best way for mobile robots coordination because this type of strategy (centralised approach) suffers from the single point of failure and, furthermore, it relies on complicated protocols \cite{Sheng}. Thus, several decentralised bidding models for coordination of multiple mobile robots have been proposed. 
 
 Assigning robots to target points is achieved in different ways in the literature, for instance, with the nearest frontier approach \cite{Yamauchi}, the cost-utility approach \cite{burgard} or  with an exploration strategy based on a market economy \cite{market-economy}. Generally, these approaches aim to minimize the costs and maximize the utility and also mobile robots are updating the environment during the motion.  
 
-Market-based multi-robot coordination approaches have been successfully implemented in centralized and decentralized ways.
-Centralized market-based algorithm described in \cite{burgard} improves robustness, but the negotiation process is complex because the coordination of mobile robots is performed by a central executive that creates a global map and executes auction with collected bids from the mobile robots and assigns tasks according to the received bids. In other words, a robot (auctioneer) offers a task and other mobile robots compete by giving a bid. One with the highest revenue or the lowest cost is a winner. 
+Market-based multi-robot coordination approaches have been successfully implemented in centralised and decentralised ways.
+centralised market-based algorithm described in \cite{burgard} improves robustness, but the negotiation process is complex because the coordination of mobile robots is performed by a central executive that creates a global map and executes auction with collected bids from the mobile robots, while in the same time assigning tasks according to the received bids. In other words, a robot (auctioneer) offers a task and other mobile robots compete by giving a bid. One with the highest revenue or the lowest cost is a winner. 
 
-A special approach in which the number of mobile robots is greater then the number of candidate target points is presented by Hawley and Butler \cite{Hawley}. They implemented the auction-based coordination for both task assignment and coalition formation. 
+A special approach in which the number of mobile robots is greater then the number of candidate target points is presented by Hawley and Butler \cite{Hawley}. They implemented the auction-based coordination for both, task assignment and coalition formation. 
  
-The general concept of market-based approaches is that the robots are independent in terms of planning for themselves, but are able to take into account team resources. It is shown in \cite{usporedba} that in case when different team sizes are included, the market method has an advantage over the centralized approach in terms of cost, and over the behavioral method in terms of computation time.
-Hence, we choose the market-model and upgrade the benefit function by adding the occupancy function with the desire to make mobile robots be dispersed in the environment. Furthermore, the goal of paper is to find out a decentralized strategy of negotiation and achieve event-based communication between mobile robots including less information in negotiation process. 
+The general concept of market-based approaches is that the robots are independent in terms of planning for themselves, but are able to take into account team resources. It is shown in \cite{usporedba} that in case when different team sizes are included, the market method has an advantage over the centralised approach in terms of cost, and over the behavioral method in terms of computation time.
+Hence, the proposed method is based on the market-model that includes an upgrade of the benefit function by adding the occupancy function which makes mobile robots more dispersed in the environment. Furthermore, the paper introduces a decentralised market-based strategy that implements event-based communication between mobile robots, thus reducing amount of information used in negotiation process. 
+
 
 
 
@@ -313,6 +313,8 @@ Due to the fact that we want to show the efficiency of our decentralized strateg
 
 \bibitem{burgard} W. Burgard, M. Moors, C. Stachniss, and F. Schneider. Coordinated multi-robot exploration. IEEE Transactions on Robotics, 21(3):376–378, 2005.
 
+\bibitem{Simmons} R. G. Simmons, D. Apfelbaum, W. Burgard, D. Fox, M. Moors, S. Thrun, and H. L. S. Younes, Coordination for Multi-Robot Exploration and Mapping, in Proceedings of the Seventeenth National Conference on Artificial Intelligence and Twelfth Conference on Innovative Applications of Artificial Intelligence, pp. 852-858, August 2000 
+
 \bibitem{sold} B.P. Gerkey and M.J. Matarić, Sold!: Auction methods for multi-robot coordination. IEEE Transactions on Robotics and Automation,
 18(5):758-768, 2002.
 
@@ -334,10 +336,9 @@ Proc. of the Second International Conference on Autonomous Agents, pages 47–53
 
 \bibitem{segmentation} K. M. Wurm, C. Stachniss, and W. Burgard, Coordinated multi-robot exploration using a segmentation of the environment, in Proc. IEEE/RSJ  International Conference on Intelligent Robots and Systems (IROS), September 2008.
 
-\bibitem{Julia} M. Julia, A. Gil, and O. Reinoso, A comparison of path planning strategies for autonomous exploration and mapping of unknown environments, Autonomous Robots, vol. 33, no. 4, pp. 427–444, 2012. [Online]. Available: http://dx.doi.org/10.1007/s10514-012-9298-8
+\bibitem{Julia} M. Julia, A. Gil, and O. Reinoso, A comparison of path planning strategies for autonomous exploration and mapping of unknown environments, Autonomous Robots, vol. 33, no. 4, pp. 427–444, 2012. 
 
-\bibitem{indoor} C. Stachniss, O. M. Mozos, and W. Burgard, Efficient exploration of
-unknown indoor environments using a team of mobile robots, Annals of Mathematics and Artificial Intelligence, vol. 52, no. 2-4, pp. 205–227, 2008.
+\bibitem{indoor} C. Stachniss, O. M. Mozos, and W. Burgard, Efficient exploration of unknown indoor environments using a team of mobile robots, Annals of Mathematics and Artificial Intelligence, vol. 52, no. 2-4, pp. 205–227, 2008.
 
 \bibitem{unsupervised-clustering} A. Solanas and M. A. Garcia, Coordinated multi-robot exploration through unsupervised clustering of unknown space, in Proc.  International Conference on Intelligent Robots and System (IROS), 2004.
 
@@ -351,11 +352,16 @@ unknown indoor environments using a team of mobile robots, Annals of Mathematics
   
 \bibitem{Sheng} W. Sheng, Q. Yang, S. Ci, and N. Xi, Distributed Multi-robot Coordination Algorithm for Area Exploration and Mapping, IEEE International Conference on Robotics and Automation (ICRA) Workshop on The State-of-the-Art of Mobile Robot Area Coverage, 2004.
 
+\bibitem{Konolige} D. Fox, J. Ko, K. Konolige, B. Limketkai, D. Schulz, and B. Stewart, Distributed Multirobot Exploration and Mapping, in Proceedings of the IEEE, vol. 94, no. 7, pp. 1325-1339, July 2016
+
 \bibitem{usporedba} M. B. Dias, and A. Stentz, A Comparative Study between Centralized, Market-Based, and Behavioral Multirobot Coordination Approaches, in Proceedings of the 2003 IEEE/RSJ  International Conference on In Intelligent Robots and Systems (IROS), Las Vegas, Nevada, October 2003.
 
 \bibitem{distance-cost} J. Faigl, M.Kulich, L.Preucil, Goal Assignment using Distance Cost in Multi-Robot Exploration, in Proc. IEEE/RSJ  International Conference on Intelligent Robots and Systems (IROS), Vilamoura, Algarve, Portugal, October 2012.
 
 \bibitem{Hawley} J. Hawley, and Z. Butler, Hierarchical distributed task allocation for multi-robot exploration, in A. Martinoli, F. Mondada, N. Correll, G. Mermoud, M. Egerstedt, M. A. Hsieh, L. E. Parker, and K.Støy, Distributed autonomous robotic systems, vol. 83, pp. 445–458, Heidelberg: Springer, 2013.
+
+\bibitem{Wurman} P. R. Wurman, R. D'Andrea, and M. Mountz, Coordinating hundreds of cooperative, autonomous vehicles in warehouses, in Proc. IAAI'07 Proceedings of the 19th national conference on Innovative applications of artificial intelligence, vol. 2, pp. 1752-1759, Vancouver, British Columbia, Canada, July 2007
+
 
 \end{thebibliography}
 
