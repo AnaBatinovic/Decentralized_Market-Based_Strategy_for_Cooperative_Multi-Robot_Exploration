@@ -661,7 +661,7 @@
 %
 \usepackage{graphicx}
 \usepackage{array}
-
+\usepackage{booktabs}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{pifont}
@@ -675,6 +675,7 @@
 \usepackage{mathpazo}
 \usepackage{helvet}
 \usepackage[english, croatian]{babel}
+
 
 %\usepackage{subcaption}
 
