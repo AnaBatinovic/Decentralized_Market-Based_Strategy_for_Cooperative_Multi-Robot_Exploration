@@ -659,7 +659,7 @@
 %
 %
 %
-\usepackage{graphicx}
+\usepackage{graphicx, subcaption}
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{algorithm}
@@ -675,7 +675,7 @@
 \usepackage{mathpazo}
 \usepackage{helvet}
 \usepackage[english, croatian]{babel}
-
+\usepackage{dblfloatfix}
 
 %\usepackage{subcaption}
 

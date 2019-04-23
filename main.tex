@@ -58,7 +58,7 @@ Decentralised market-based strategy for cooperative multi-robot exploration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 
-This work presents a novel approach to autonomous decentralised multi-robot frontier exploration and mapping of an unknown area based on the market model. The exploration algorithm enables mobile robots to communicate among each other, to negotiate and to become dispersed in the environment. Mobile robot team simultaneously explores the environment, discovers frontier points (points on the border between the explored and unexplored space in map), negotiates by fully connected graph and event-based communication. During the negotiation process mobile robots exchange information just about frontier points, what reduces amount of exchange information. The main goal is to allocate the mobile robots to target frontier points in the environment by minimising overall exploration time. The proposed strategy has been implemented in simulation environment and compared with a centralised market model strategy. The simulation results demonstrate better behaviour for the decentralised multi-robot strategy in the terms of total exploration time and path length. 
+This work presents a novel approach to autonomous decentralised multi-robot frontier exploration and mapping of an unknown area based on the market model. The exploration algorithm enables mobile robots to communicate among each other, to negotiate and to become dispersed in the environment. Mobile robot team simultaneously explores the environment, discovers frontier points (points on the border between the explored and unexplored space in map), negotiates by fully connected graph and event-based communication. During the negotiation process mobile robots exchange information just about frontier points, what reduces amount of exchange information. The main goal is to allocate the mobile robots to target frontier points in the environment by minimising overall exploration time. The proposed strategy has been implemented in simulation environment and compared with a centralised strategy. The simulation results demonstrate better behaviour for the decentralised multi-robot strategy in the terms of total exploration time and path length. 
 
 \end{abstract}
 
@@ -70,15 +70,15 @@ Analysis and synthesis of decentralised multi-robot systems belong to core robot
  Like in the human world, robots can be more effective when they work together. Moreover, a robot team can accomplish a predefined task much quicker than a single robot can \cite{free-market}. Another advantage of mobile robot teams arises from possibility to merge overlapping sensor information, which in turn can help to compensate for sensor uncertainty \cite{segmentation}.
 If is done properly, multi-robot coordination can lead to i) task accomplishment in the shortest possible time, ii) increased robustness, iii) higher map quality (in case of exploration task), and finally iv) the completion of tasks impossible for a single robot to perform \cite{survey-analysis}.
 
-We consider the problem of an autonomous multi-robot exploration with decentralised coordination strategy based on market model. Mobile robot's laser scan and odometry represent an input data for a Simultaneous Localisation and Mapping module. In this work we focus on graph SLAM method - Google Cartographer \cite{cartographer} which uses the ground truth mobile robot pose (\textit {perfect localisation}) from the Stage simulator \cite{Stage}. Besides a map building and perfect localisation, the module contains a frontier detection described in \cite{juraj}. A result of the frontier detection are the points on the border of the explored and unexplored space in the environment - \textit{frontier points} shown in the Fig. \ref{fig:environment}. The decentralised strategy based on market model module acquires the filtered frontier points and assigns mobile robots to target points. Then the algorithm for path planning navigates mobile robot toward the target point (Fig. \ref{fig:exploration-strategy}).      
+We consider the problem of an autonomous multi-robot exploration with decentralised coordination strategy based on market model. Mobile robot's laser scan and odometry represent an input data for a Simultaneous Localisation and Mapping module. In this work we focus on graph SLAM method - Google Cartographer \cite{cartographer} which uses the ground truth mobile robot pose (\textit {perfect localisation}) from the Stage simulator \cite{Stage}. Besides a map building and perfect localisation, the module contains a frontier detection described in \cite{juraj}. A result of the frontier detection are the points on the border of the explored and unexplored space in the environment - \textit{frontier points} shown in the Fig. \ref{fig:environment}. The result of the frontier detection module are very dense frontier points, thus we use a filter to get the manageable number of the frontier points. The decentralised strategy based on market model module acquires the frontier points from the filter module and assigns mobile robots to target points. Then the algorithm for path planning navigates mobile robot toward the target point (Fig. \ref{fig:exploration-strategy}).      
 
-\begin{figure}[t]
+\begin{figure}{t}
 	\centering\includegraphics[width=0.85\columnwidth]{frontier_rviz_vol3.png}
 	\caption {The description of the environment. A 2D map is represented by occupancy grid that divides the map into cells: the white cells describe explored and grey cells unexplored space, while the black ones define obstacles. The frontier detector publishes frontier points (red) and filter module publishes filtered frontier points (green).}
 	\label{fig:environment}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}
     \centering\includegraphics[width=1.0\columnwidth]{diagram_exploration.png}
 	\caption{Overall schematic diagram of the exploration algorithm.}
    \label{fig:exploration-strategy}
@@ -90,19 +90,22 @@ The rest of the paper is organised as follows. The related work is presented in 
 
 \section{RELATED WORK}
 
- \subsection{Centralised vs. decentralised}
-Assigning robots to target points is achieved either with centralised or decentralised algorithms, for instance, with the nearest frontier approach \cite{Yamauchi}, the cost-utility approach \cite{burgard} or  with an exploration strategy based on a market economy \cite{market-economy}. 
 
-Centralised task assignment for a multi-robot system is often not practical due to communication limits  \cite{free-market}, robustness issues \cite{survey-analysis}, time required for algorithm execution and scalability \cite{Julia}. Generally, in the centralised approach each mobile robot gets tasks assigned from a single central leader using one of the centralised planning algorithm. The communication between the central leader and mobile robots ensures sharing updated information about mobile robot's poses in order to have a real time task allocation. But, an exchange of such a large amount of information can cause the slowness of the process. Previous studies of market-based models indicate that using central system for task assignment suffers from the single point of failure and, furthermore, it relies on complicated protocols \cite{Sheng}. Thus, decentralised bidding models for the multiple mobile robots coordination have been proposed.
+Assigning robots to target points is achieved either with centralised or decentralised algorithms. 
+Centralised task assignment for a multi-robot system is often not practical due to communication limits  \cite{free-market}, robustness issues \cite{survey-analysis}, time required for algorithm execution and scalability \cite{Julia}. Generally, in the centralised approach each mobile robot gets tasks assigned from a single central leader using one of the centralised planning algorithm. The communication between the central leader and mobile robots ensures sharing updated information about mobile robot's poses in order to have a real time mobile robot allocation. The central leader could be a computer or a robot.
 
-Centralised market-based algorithm described in \cite{burgard} improves robustness, but the negotiation process is complex because the coordination of mobile robots is performed by a central executive that creates a global map and executes auction with collected bids from the mobile robots, while in the same time assigning tasks according to the received bids. In other words, a robot (auctioneer) offers a task and other mobile robots compete by giving a bid. One with the highest revenue or the lowest cost is a winner.
-The general concept of market-based approaches includes an independence of the mobile robots in terms of planning, and a mobile robots ability to take team resources into account. It is shown in \cite{usporedba} when different team sizes are included, the decentralised market method has an advantage over the centralised approach in terms of distance travelled, and over the behavioural method \cite{behavioural} in terms of computation time.
+Centralised algorithm described in \cite{burgard} improves robustness, but the negotiation process is complex because the coordination of mobile robots is performed by a central executive that creates a global map and executes auction with collected bids from the mobile robots, while in the same time assigning tasks according to the received bids. In other words, a robot (auctioneer) offers a task and other mobile robots compete by giving a bid. One with the highest revenue or the lowest cost is a winner. 
 
-Hence, the proposed method is based on the market-model that includes an upgrade of the benefit function by adding the occupancy function which makes mobile robots more dispersed in the environment. Moreover, the paper introduces a decentralised market-based strategy that implements event-based communication among mobile robots, reducing amount of information used in negotiation process. 
+On the other hand, in the decentralised approach mobile robots are completely autonomous in the exploration process. Each mobile robot has its own local knowledge of the world and can decide its future actions by taking into account its current context and task, its own capacities and the capacities of the other mobile robots, through a negotiation process \cite{Yan}. Moreover, it usually has better reliability, flexibility, adaptability and robustness. 
 
-\subsection{Target point selection}
+One of the most representative decentralised approaches is a market model.
+The general concept of the market-based approaches includes an independence of the mobile robots in terms of planning, and a mobile robots ability to take team resources into account. It is shown in \cite{usporedba} when different team sizes are included, the decentralised market method has an advantage over the centralised approach in terms of distance travelled, and over the behavioural method \cite{behavioural} in terms of computation time.
 
-A popular approach for an unknown area exploration is the frontier based exploration algorithm introduced by Yamauchi \cite{Yamauchi}. The idea is routing mobile robots to the frontier, border that separates explored space form unexplored space in the map. The frontier edges detection can be achieved using RRT (Rapidly Exploring Random Tree) algorithm developed by Hassan Umari and Shayok Mukhopadhyay \cite{Umari}. The RRT algorithm is not only biased towards unexplored regions, but also provides a general approach which can be extended to higher dimensional spaces. However, RRT algorithm proved to be not fast enough in instances when larger parts of the map were discovered, so in this paper, we use frontier detection method that continuously provides frontier \cite{juraj}.   
+Authors in \cite{market-economy} use a market architecture for multi-robot mapping and exploration problem that aims to maximise the difference between the benefit and the cost to achieve the same thing (minimise the overall exploration time) we are trying to do, but our approach takes into account the occupancy function which makes mobile robots more dispersed in the environment. Furthermore, we introduce a decentralised market-based strategy that implements event-based communication among mobile robots, reducing amount of information used in negotiation process. As well as Michael et al. \cite{Michael}, we propose a strategy in which mobile robots are able to take part in negotiation for target point assignment with the assumption that the agents have knowledge of all target points, but we rely on the assumption that only one mobile robot can be assigned to a specific target point.  
+
+In this paper we compared centralised strategy based on the approach described in \cite{burgard} that takes into account cost and utility functions proposed in the next section and the new decentralised strategy based on market model. The central control agent in the centralised strategy implementation  is a computer.
+
+A popular approach for an unknown area exploration is the frontier based exploration algorithm introduced by Yamauchi \cite{Yamauchi}. The idea is routing mobile robots to the frontier, border that separates explored space form unexplored space in the map. The frontier edges detection can be achieved using RRT (Rapidly Exploring Random Tree) algorithm developed by Hassan Umari and Shayok Mukhopadhyay \cite{Umari}. The RRT algorithm is not only biased towards unexplored regions, but also provides a general approach which can be extended to higher dimensional spaces. However, RRT algorithm proved not to be fast enough in instances when larger parts of the map were explored, so in this paper, we use frontier detection method that continuously provides frontier, described in \cite{juraj}.   
 
 \section{APPROACH}
 
@@ -113,7 +116,7 @@ In this paper we determine the target points for each mobile robot in the team u
 
 At the core of our approach is negotiation among mobile robots during the exploration and mapping. The mobile robots exchange information under the assumption of fully connected graph, where all mobile robots communicate with each other and in the negotiation process each mobile robot takes into account the "statements" of the other mobile robots.
 
-Every mobile robot $i$ gets the list of filtered frontier points from the filter module (Fig. \ref{fig:exploration-strategy}):
+Every mobile robot $i$ gets the list of frontier points:
 
 \begin{equation}
    \boldsymbol{y}=\begin{bmatrix}
@@ -121,7 +124,7 @@ Every mobile robot $i$ gets the list of filtered frontier points from the filter
 \end{bmatrix},
 \end{equation}
 
-where $M$ is  the number of filtered frontier points, and every list member is a vector with $x$, $y$ and $z$ components. 
+where $M$ is  the number of frontier points, and every list member is a vector with $x$, $y$ and $z$ components. 
 
 \begin{equation}
    \boldsymbol{y}=\begin{bmatrix}
@@ -149,41 +152,42 @@ where $M$ is  the number of filtered frontier points, and every list member is a
 \end{bmatrix}.
 \end{equation}
 
-In this paper we define the weight as a function of the cost, utility and frontier occupancy function. If $i$ is an ordinal number of the mobile robot, and $j$ is an ordinal number of the frontier point then the cost function: $C_{ij}$: $R$ \(\rightarrow \text{$\mathbb{R}^{+}$}\) is a mapping from the set of resources $R$ to a positive real number. $C_{ij}$ describes the cost of $i$th robot to visit $j$th filtered frontier point. The cost can be the function of the time,  energy and so on. In our case the cost is the estimated distance travelled by mobile robot to reach the target frontier point. The estimated distance is approximated using Euclidean distance between the mobile robot position $\boldsymbol{p_{i}}$ and the filtered frontier point position $\boldsymbol{q_{j}}$:
+In this paper we define the weight as a function of the cost, utility and frontier occupancy function. If $i$ is an ordinal number of the mobile robot, and $j$ is an ordinal number of the frontier point then the cost function: $C_{ij}$: $R$ \(\rightarrow \text{$\mathbb{R}^{+}$}\) is a mapping from the set of resources $R$ to a positive real number. $C_{ij}$ describes the cost of $i$th robot to visit $j$th frontier point. The cost can be the function of the time,  energy or, like in our case, the cost is the estimated distance travelled by mobile robot to reach the target frontier point. The estimated distance is approximated using Euclidean distance between the mobile robot position $\boldsymbol{p_{i}}$ and the frontier point position $\boldsymbol{q_{j}}$:
 
 \begin{equation}\small
     C_{ij}=d(\boldsymbol{p_{i}}, \boldsymbol{q_{j}}) = \sqrt{(p_{ix}-q_{jx})^{2}+(p_{iy}-q_{jy})^{2}+(p_{iz}-q_{jz})^{2}}.
     \label{cost}
 \end{equation}
 
-The utility function $U_{ij}$:  \(\text{$\mathcal {M}$}\) \(\rightarrow \text{$\mathbb{R}^{+}$}\) returns a positive real number from the occupancy grid \(\text{$\mathcal {M}$}\). The cells of \(\text{$\mathcal {M}$}\) may be marked as explored space, unexplored space or obstacle. The utility function is proportional to the number of the unexplored cells within a fixed distance from the filtered frontier point $j$ in the previous defined radius $r$: 
+The utility function $U_{ij}$:  \(\text{$\mathcal {M}$}\) \(\rightarrow \text{$\mathbb{R}^{+}$}\) returns a positive real number from the occupancy grid \(\text{$\mathcal {M}$}\). The cells of \(\text{$\mathcal {M}$}\) may be marked as explored space, unexplored space or obstacle. The utility function is proportional to the number of the unexplored cells ($c$) within a fixed distance from the frontier point $j$ in the previous defined radius $r$: 
 
 \begin{equation}
     U_{ij} = \lambda_{u}c,
 \end{equation}
 
-where $\lambda_{u}$ is a constant experimentally determined. It is assumed that the mobile robot will detect all unexplored cells around the assigned frontier point after reaching it. 
+where $\lambda_{u}$ is a constant experimentally determined. When the function $U_{ij}$ is taken into account, the mobile robot will prefer frontier points that--- unexplored space even if they are a little bit further. 
+It is assumed that the mobile robot will detect all unexplored cells around the assigned frontier point after reaching it. 
 
 The frontier occupancy function $F_{ij}$ is 2-dimensional Gaussian function with the position of the peak in the frontier point and with the standard deviations $3\sigma_{x}=r_{f}$ and $3\sigma_{y}=r_{f}$. Moreover, the frontier occupancy function has a value if the frontier point $j$, for which mobile robot $i$ is calculating the weight, is in the range of radius $r_{f}$ from the position of the mobile robot assigned point ($q_{a}$). 
 
 \begin{equation}
     F_{ij} =  \lambda_{f} e^{-\Big[\frac{(q_{jx} - q_{ax})^2}{2\sigma_{x}^2} + \frac{(q_{jy} - q_{ay})^2}{2\sigma_{y}^2}\Big]},
 \end{equation}
-where $\lambda_{f}$  is also  a constant experimentally determined. The example of the filtered frontier point $j$ and its radii $r$ and $r_{f}$ is shown in Fig. \ref{fig:radijusi}.
+where $\lambda_{f}$  is also  a constant experimentally determined. Function $F_{ij}$ is used to prevent assigning the frontier point to mobile robot B if that point is close to the point assigned to mobile robot A. The example of the frontier point $j$ and its radii $r$ and $r_{f}$ is shown in Fig. \ref{fig:radijusi}.
 
 \begin{figure}[b!]
-	\centering\includegraphics[width=0.85\columnwidth]{rviz_radius_vol3.png}
-	\caption{Detected filtered frontier point $j$ and its radii $r$ and $r_{f}$.}
+	\centering\includegraphics[width=0.85\columnwidth]{robot_and_radius.png}
+	\caption{Detected frontier point $j$ and its radii $r$ and $r_{f}$.}
 	\label{fig:radijusi}
 \end{figure}
 
-For each filtered frontier point $j$ weight $W_{ij}$ of $i$-th mobile robot is calculated as: 
+For each frontier point $j$ weight $W_{ij}$ of $i$-th mobile robot is calculated as: 
 \begin{equation}
    {W}_{ij}= {C_{ij}} - {U_{ij}} + {F_{ij}}.
    \label{weight}
 \end{equation}
 
-The weight matrix $\boldsymbol{W}$ ($N\times M$) is formed for $N$ mobile robots and $M$ filtered frontier points: 
+The weight matrix $\boldsymbol{W}$ ($N\times M$) is formed for $N$ mobile robots and $M$ frontier points: 
 
 \begin{equation}
     \boldsymbol{W} = \begin{bmatrix}
@@ -196,8 +200,8 @@ The weight matrix $\boldsymbol{W}$ ($N\times M$) is formed for $N$ mobile robots
     \end{bmatrix}.
 \end{equation}
 
-Mobile robots exchange the information about the weight for the particular filtered frontier point and make decisions for the future actions. Accordingly the amount of exchanging data is reduced and results in easier and faster communication.
-The weight matrix $\boldsymbol{W}$ represents the input into the Hungarian algorithm that finds an optimal assignment solution in polynomial time. The Hungarian algorithm is described in \cite{hungarian} and tested in \cite{comparison}. 
+Mobile robots exchange the information about the weight for the particular frontier point and make decisions for the future actions. Accordingly the amount of exchanging data is reduced and results in easier and faster communication.
+The weight matrix $\boldsymbol{W}$ represents the input into the Hungarian algorithm that attempts to find an optimal assignment solution in polynomial time. The Hungarian algorithm is described in \cite{hungarian} and tested in \cite{comparison}. Initially, the Hungarian algorithm assumes that the number of frontier points is the same as the number of mobile robots. Due to the fact that there are mostly more mobile robots than frontier points, virtual mobile robots are added and then skipped during the process of assignment and exploration.
 
 Let the matrix $X$ be the matrix of zeros and ones, where $X[i,j]=1$ iff the mobile robot $i$ is assigned to the frontier point $j$.
 Than the optimal task assignment has weight:
@@ -209,10 +213,10 @@ Than the optimal task assignment has weight:
 anticipating that minimisation of sum could ensure the dispersion of the mobile robots in the environment. 
 
 \begin{algorithm}[H]
-\caption{Decentralised strategy for a mobile robot $i$ exploration}
+\caption{Decentralised strategy for mobile robot $i$}
 \label{algorithm1}
 \begin{algorithmic}[1]
-\For{ each filtered frontier point $j$}
+\For{ each frontier point $j$}
 \State\hspace{\algorithmicindent} $W_{ij}$ = $C_{ij}$ - $U_{ij}$ + $F_{ij}$
 \State\hspace{\algorithmicindent} Send $W_{ij}$ to the other mobile robots.
 \State \hspace{\algorithmicindent} Receive the weights from the others.
@@ -222,14 +226,13 @@ anticipating that minimisation of sum could ensure the dispersion of the mobile 
 \EndFor
 \end{algorithmic}
 \end{algorithm}
-
-Our decentralized strategy is in progress during the robot's motion and there are seven steps for each robot to be executed (Algorithm \ref{algorithm1}).    
-
-When mobile robot $i$ is assigned to frontier point according to line 7 in Algorithm \ref{algorithm1}, the mobile robot starts to follow the planned path and navigate to the target frontier point. Moreover, at the moment when the mobile robot $i$ reaches the target point, a weight calculation request is sent to the other mobile robots, whose responses fill the  weight matrix $\boldsymbol{W}$ (an input to Hungarian algorithm). The described process is executing until the whole environment is explored.
+Our decentralised strategy is in progress during the robot's motion and there are seven steps for each robot to be executed (Algorithm \ref{algorithm1}).  All frontier points are visible to every mobile robot.
+When mobile robot $i$ is assigned to frontier point according to line 7 in Algorithm \ref{algorithm1}, the mobile robot starts to follow the planned path and navigate to the target frontier point. Moreover, at the moment when the mobile robot $i$ reaches the target point, a weight calculation request is sent to the other mobile robots, whose responses fill the  weight matrix $\boldsymbol{W}$ (an input to Hungarian algorithm). The described process is executing until the whole environment is explored, in other words until the global map of the environment is generated (by Google Cartographer SLAM algorithm).
 
 \section{SIMULATION RESULT}
 
-The proposed strategy is implemented and tested using the Robot Operating System (ROS) framework. In order to prove the efficiency of our decentralised strategy, we compared it with coordinated centralised market model described in \cite{burgard}. Experiments were performed in the two different indoor environments (Fig. \ref{fig:scenarios}) with the two, three and five mobile robots. The start pose of the mobile robot was the same for each run. The results are presented as average of 10 runs for each set.
+The proposed strategy is implemented and tested using the Robot Operating System (ROS) framework. In order to prove the efficiency of our decentralised strategy, we compared it with coordinated centralised market model described in \cite{burgard}. Experiments were performed in the two different indoor environments (Fig. \ref{fig:scenarios}) with the two, three and five mobile robots. The start pose of the mobile robot was the same for each run. The results are presented as average of 10 runs for each set. The simulation setup is shown in the Table \ref{tab:table1}.
+
 
 \begin{figure}[t]
 	\centering
@@ -251,6 +254,38 @@ The proposed strategy is implemented and tested using the Robot Operating System
  \caption{Benchmark scenarios. The terrains cover the flat surface 40 x 20 $m^{2}$ with static obstacles. \boldsymbol{a)} Office-like scenario; \boldsymbol{b)} Unstructured scenario. }
  \label{fig:scenarios}
 \end{figure}
+
+\begin{table}[t]
+  \centering
+    \caption{Simulation setup.}
+    \label{tab:table1}
+    \begin{tabular}{ll} 
+\hline
+\rule{0pt}{2.2ex}
+\textbf{Mobile robot features} &  \\ 
+\quad Model & Pioneer P3-DX  \\
+\quad Maximum speed & 1.5 (m/s) \\
+\quad Laser range & 10 (m) \\
+\quad Laser scan window & 250 ($^{\circ}$) \\
+\hline
+\rule{0pt}{2.2ex}
+\textbf{Environment features}  \\ 
+\quad Terrain & 40 x 20 ({m}^2) \\
+\quad Wall height & 0.5 (m) \\
+\quad Initial mobile robot position & Center \\
+\hline
+\rule{0pt}{2.2ex}
+\textbf{Decentralised strategy parameters} & \\
+\quad  \lambda_{u} & 0.9\\
+\quad \lambda_{f} & 1.2\\
+\quad $r$ & 1.0\\
+\quad $r_{f}$ & 3.0\\
+\hline
+\rule{0pt}{2.2ex}
+%\quad Intel Core i7-8550U @ 1.80GHz & \\
+\end{tabular}
+\end{table}
+
 The comparison of the centralised strategy and our decentralised strategy is shown using the indicators defined as follows:
 
 \textbf{Coverage Ratio (CR)}: percentage of the accessible terrain covered by the team. Calculated as:  \( \frac{\text{explored cells} \cdot 100}{\text{accessible cells}} \).
@@ -259,59 +294,87 @@ The comparison of the centralised strategy and our decentralised strategy is sho
 
 \textbf{Total exploration Time (TT)}: time elapsed from the beginning until the end of exploration measured in seconds.\\
 
-First of all, it is interesting to see how the coverage evolves over time. Fig. \ref{fig:office_cent}, Fig. \ref{fig:office_decent}, Fig. \ref{fig:unstruc_cent} and Fig. \ref{fig:unstruc_decent} show \textbf{CR} over time for both centralised and decentralised multi-robot exploration strategies in the office scenario as well as in the unstructured scenario. We report the time it takes to cover 50, 75, 90 and 99 percent of the environment. Obviously, it takes almost the same time to explore a few last cells and 25 percent (from 75 to 90 percent) of the environment. In the both scenarios, decentralised strategy need less time to explore the same percentage of the environment.  
+First of all, it is interesting to see how the coverage evolves over time. Fig. \ref{fig:office_coverage} and Fig. \ref{fig:unstructured_coverage} show \textbf{CR} over time for both centralised and decentralised multi-robot exploration strategies in the office scenario as well as in the unstructured scenario. We report the time it takes to cover 50, 75, 90 and 99 percent of the environment. Obviously, it takes almost the same time to explore a few last cells and 25 percent (from 75 to 90 percent) of the environment. In the both scenarios, decentralised strategy need less time to explore the same percentage of the environment.  
 
-\begin{figure}[b!]
-	\centering\includegraphics[width=0.9\columnwidth]{office_coverage_cent.png}
-	\caption{Coverage ratio over time in the office scenario centralised multi-robot exploration.}
-	\label{fig:office_cent}
-\end{figure}
+\begin{figure*}[!h]
+	\centering
+	\begin{minipage}[c]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{office_c_cent.png}
+		\captionsetup{labelformat=empty}
+		\caption*{\boldsymbol{a)}}
+		\label{fig:office1}
+	\end{minipage}%
+	\begin{minipage}[c]{0.50\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{office_c_decent.png}
+		\captionsetup{labelformat=empty}
+		\caption*{\boldsymbol{b)}}
+		\label{fig:office2}
+	\end{minipage}
+ \caption{Coverage ratio over time in the office scenario for both a) centralised and b) decentralised multi-robot exploration.}
+ \label{fig:office_coverage}
+\end{figure*}
 
-\begin{figure}[h!]
-	\centering\includegraphics[width=0.9\columnwidth]{office_coverage_decent.png}
-	\caption{Coverage ratio over time in the office scenario decentralised multi-robot exploration.}
-	\label{fig:office_decent}
-\end{figure}
 
-\begin{figure}[h!]
-	\centering\includegraphics[width=0.9\columnwidth]{unstructured_coverage_cent.png}
-	\caption{Coverage ratio over time in the unstructured scenario centralised multi-robot exploration.}
-	\label{fig:unstruc_cent}
-\end{figure}
+\begin{figure*}[!h]
+	\centering
+	\begin{minipage}[c]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{unstructured_c_cent.png}
+		\captionsetup{labelformat=empty}
+		\caption*{\boldsymbol{a)}}
+		\label{fig:unstructured1}
+	\end{minipage}%
+	\begin{minipage}[c]{0.50\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{unstructured_c_decent.png}
+		\captionsetup{labelformat=empty}
+		\caption*{\boldsymbol{b)}}
+		\label{fig:unstructured2}
+	\end{minipage}
+ \caption{Coverage ratio over time in the unstructured scenario for both a) centralised and b) decentralised multi-robot exploration.}
+ \label{fig:unstructured_coverage}
+\end{figure*}
 
-\begin{figure}[h!]
-	\centering\includegraphics[width=0.9\columnwidth]{unstructured_coverage_decent.png}
-	\caption{Coverage ratio over time in the unstructured scenario decentralised multi-robot exploration.}
-	\label{fig:unstruc_decent}
-\end{figure}
 
 The next parameter of the interest is \textbf{PL} shown in the Fig. \ref{fig:office_path} and Fig. \ref{fig:unstruc_path}. It is shown that the proposed decentralised strategy based on market model gives better results than the centralised strategy from \cite{burgard}, especially in the office scenario for two and three mobile robots. 
 
 
-When we compare the \textbf{TT} for the both strategies (Fig. \ref{fig:office_tt} and Fig. \ref{fig:unstruc_tt}), it shows that five mobile robots perform better than two and three, while there is a small difference in having three robots instead of two. And still our decentralised strategy performs faster than the centralised. 
-\begin{figure}[t]
+When we compare the \textbf{TT} for the both strategies (Fig. \ref{fig:tt}), it shows that five mobile robots perform better than two and three, while there is a small difference in having three robots instead of two. And still our decentralised strategy performs faster than the centralised. 
+
+\begin{figure*}
+	\centering
+	\begin{minipage}[c]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{office_total_e_time.png}
+		\captionsetup{labelformat=empty}
+		\caption*{\boldsymbol{a)}}
+		\label{fig:office-tt1}
+	\end{minipage}%
+	\begin{minipage}[c]{0.50\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{unstructured_total_e_time.png}
+		\captionsetup{labelformat=empty}
+		\caption*{\boldsymbol{b)}}
+		\label{fig:office-tt2}
+	\end{minipage}
+ \caption{The comparison of the centralised and decentralised strategy for office a) and unstructured b) scenarios in the term of total exploration time.}
+ \label{fig:tt}
+\end{figure*}
+
+\begin{figure}[h!]
 	\centering\includegraphics[width=0.9\columnwidth]{office_path.png}
 	\caption{Path length in the office scenario for the different size of the robot team.}
 	\label{fig:office_path}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[h!]
 	\centering\includegraphics[width=0.9\columnwidth]{unstructured_path.png}
 	\caption{Path length in the unstructured scenario for the different size of the robot team.}
 	\label{fig:unstruc_path}
 \end{figure}
 
-\begin{figure}[t]
-	\centering\includegraphics[width=0.9\columnwidth]{office_tt.png}
-	\caption{Total time exploration in the office scenario.}
-	\label{fig:office_tt}
-\end{figure}
-
-\begin{figure}[t]
-	\centering\includegraphics[width=0.9\columnwidth]{unstructured_tt.png}
-	\caption{Total time exploration in the unstructured scenario.}
-	\label{fig:unstruc_tt}
-\end{figure}
 
 
 \section{CONCLUSION AND FUTURE WORK}
@@ -329,21 +392,18 @@ However, the approach described in this paper is limited in three aspects. First
                                   % sure that you do not shorten the textheight too much.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+\newpage
 \begin{thebibliography}{99}
 
 \bibitem{free-market} B. Dias, S. Stentz, A Free Market Architecture for Distributed Control of a Multirobot System, in 6th International Conference on Intelligent Autonomous Systems, pp. 115-122, 2000.
 
 \bibitem{burgard} W. Burgard, M. Moors, C. Stachniss, and F. Schneider. Coordinated multi-robot exploration. IEEE Transactions on Robotics, 21(3):376–378, 2005.
 
-\bibitem{hungarian} H.W. Kuhn, The hungarian method for the assignment problem, Naval Research Logistics Quarterly, 2(1):83–97, 1955.
+\bibitem{hungarian} H.W. Kuhn, The Hungarian method for the assignment problem, Naval Research Logistics Quarterly, 2(1):83–97, 1955.
 
-\bibitem{planetary} M.J. Matarić and G. Sukhatme, Task-allocation and coordination of
-multiple robots for planetary exploration, in Proc. of the Int. Conf. on Advanced Robotics (ICAR), pages 61–70, Budapest, Hungary, 2001.
+\bibitem{planetary} M.J. Matarić and G. Sukhatme, Task-allocation and coordination of multiple robots for planetary exploration, in Proc. of the Int. Conf. on Advanced Robotics (ICAR), pages 61–70, Budapest, Hungary, 2001.
 
-\bibitem{Yamauchi} B. Yamauchi, Frontier-based exploration using multiple robots, in
-Proc. of the Second International Conference on Autonomous Agents, pages 47–53, Minneapolis, MN, USA, 1998.
+\bibitem{Yamauchi} B. Yamauchi, Frontier-based exploration using multiple robots, in Proc. of the Second International Conference on Autonomous Agents, pages 47–53, Minneapolis, MN, USA, 1998.
 
 \bibitem{market-economy} R. Zlot, A.T. Stenz, M.B. Dias, and S. Thayer, Multi-robot exploration controlled by a market economy, in Proc. of the IEEE Int. Conf. on Robotics and Automation (ICRA), Washington, DC, USA, 2002.
 
@@ -359,11 +419,9 @@ Proc. of the Second International Conference on Autonomous Agents, pages 47–53
 
 \bibitem{comparison} M. Kulich, T. Juchelka, and L. Preucil, Comparison of exploration strategies for multi-robot search, Acta Polytech, 55(3):162, June 2015. 
 
-\bibitem{survey-analysis} M. B. Dias, R. Zlot, N. Kalra,and A. Stentz, Market-based multirobot coordination: A survey and analysis, Proceedings of the IEEE 94 (7), 1257-1270, 2006.
+\bibitem{survey-analysis} M. B. Dias, R. Zlot, N. Kalra, and A. Stentz, Market-based multirobot coordination: A survey and analysis, Proceedings of the IEEE 94 (7), 1257-1270, 2006.
 
 \bibitem{Umari} H.Umari, and S. Mukhopadhyay, Autonomous Robotic Exploration Based on Multiple Rapidly-exploring Randomized Trees,  in Proc. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Vancouver, BC, Canada, September 2017.
-  
-\bibitem{Sheng} W. Sheng, Q. Yang, S. Ci, and N. Xi, Distributed Multi-robot Coordination Algorithm for Area Exploration and Mapping, IEEE International Conference on Robotics and Automation (ICRA) Workshop on The State-of-the-Art of Mobile Robot Area Coverage, 2004.
 
 \bibitem{usporedba} M. B. Dias, and A. Stentz, A Comparative Study between Centralized, Market-Based, and Behavioral Multirobot Coordination Approaches, in Proceedings of the 2003 IEEE/RSJ  International Conference on In Intelligent Robots and Systems (IROS), Las Vegas, Nevada, October 2003.
 
@@ -371,11 +429,15 @@ Proc. of the Second International Conference on Autonomous Agents, pages 47–53
  
 \bibitem{behavioural} H. Lau, Behavioural approach for multi-robot exploration, Proceedings of. 2003 Australasian Conference on Robotics and Automation, Brisbane, Australia, December 2003
 
-\bibitem{cartographer} W.  Hess,  D.  Kohler,  H.  Rapp,  and  D.  Andor, Real-time  loop  closure in  2d  lidar  slam, inRobotics  and  Automation  (ICRA), 2016  IEEEInternational Conference on. IEEE, 2016, pp. 1271–1278
+\bibitem{cartographer} W.  Hess,  D.  Kohler,  H.  Rapp,  and  D.  Andor, Real-time  loop  closure in  2d  lidar  slam, inRobotics  and  Automation  (ICRA), 2016  IEEE International Conference on. IEEE, 2016, pp. 1271–1278
 
 \bibitem{juraj} J. Orsulic, D. Mikic and Z. Kovacic, Efficient Dense Frontier Detection for 2D GraphSLAM Based on Occupancy Grid Submaps
 
 \bibitem{Stage} W. Woodall, http://wiki.ros.org/stage
+
+\bibitem{Yan}Z. Yan, N. Jouandeau and A. A. Cherif, A Survey and Analysis of Multi-Robot Coordination, International Journal of Advanced Robotic Systems, Epub ahead of print 1 January 2013
+
+\bibitem{Michael} N. Michael, M. M. Zavlanos, V. Kumar, and G. J. Pappas, Distributed multi-robot task assignment and formation control, In Proceedings of ICRA'08, pages 128-133, Pasadena, CA, USA, May 2008.
 
 \end{thebibliography}
 
