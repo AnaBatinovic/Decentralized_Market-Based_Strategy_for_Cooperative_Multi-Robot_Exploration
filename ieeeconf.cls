@@ -659,7 +659,7 @@
 %
 %
 %
-\usepackage{graphicx, subcaption}
+\usepackage{graphicx}
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{algorithm}
@@ -676,11 +676,20 @@
 \usepackage{helvet}
 \usepackage[english, croatian]{babel}
 \usepackage{dblfloatfix}
+\usepackage{multicol}
+\usepackage{stfloats}
+\usepackage{caption}
+\usepackage[tight,footnotesize]{subfigure}
+\usepackage{enumitem}
+%\usepackage{subfig}
+
+\usepackage[keeplastbox]{flushend}
+
+
 
 %\usepackage{subcaption}
+%\usepackage{float}
 
-\usepackage{subfloat}
-\usepackage{subcaption}
 
 
 \ProvidesClass{ieeeconf}[2004/1/15 revision V1.6b by Pradeep Misra]
@@ -810,6 +819,11 @@
 \renewcommand{\sfdefault}{phv}
 \renewcommand{\rmdefault}{ptm}
 \renewcommand{\ttdefault}{pcr}
+\renewcommand{\thesubfigure{{\thefigure.\arabic{subfigure}}
+\makeatletter
+\renewcommand{\p@subfigure}{}
+\renewcommand{\@thesubfigure}{\thesubfigure:\hskip\subfiglabelskip}
+\makeatother
 % enable Times now - so that all class options can see the correct font families
 \normalfont\selectfont
 
