@@ -1,0 +1,134 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out
+                                                          % if you need a4paper
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4
+                                                          % paper
+
+\IEEEoverridecommandlockouts                              % This command is only
+                                                          % needed if you want to
+                                                          % use the \thanks command
+\overrideIEEEmargins
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+\pdfminorversion=4
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+%\usepackage{amsmath} % assumes amsmath package installed
+%\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{amsmath}    			% ams packages for mathematics environment    
+\usepackage{amssymb}
+\usepackage{amsfonts}
+%\usepackage{amsthm}
+
+\usepackage{graphicx}  				% Versatile graphics manipulation options
+
+\usepackage[croatian]{babel}  % Croatian typographical rules and hyphenation patterns 
+\usepackage[utf8]{inputenc}  	% Encoding of Croatian characters
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}     	% Type 1 fonts, similar to Computer Modern
+
+\usepackage{microtype}				% Improves spacing
+
+\usepackage{subfig}
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+%\newcolumntype{C}{>{\centering\arraybackslash}X} % centered version of "X" type
+\setlength{\extrarowheight}{1pt}
+\usepackage{enumerate}				% Additional options for listing of items in enumerate environment
+\usepackage{algorithm2e}			% Writing pseudo-code
+\usepackage{todonotes}				% Adding todo items
+\usepackage{dirtree}					% Simple display of directory tree
+\usepackage{hyperref}					% Managing cross-referencing
+
+
+\usepackage{lmodern}
+\usepackage{nccmath}
+\usepackage[keeplastbox]{flushend}
+\usepackage{scalerel,stackengine}
+\stackMath
+\newcommand\reallywidehat[1]{%
+	\savestack{\tmpbox}{\stretchto{%
+			\scaleto{%
+				\scalerel*[\widthof{\ensuremath{#1}}]{\kern.1pt\mathchar"0362\kern.1pt}%
+				{\rule{0ex}{\textheight}}%WIDTH-LIMITED CIRCUMFLEX
+			}{\textheight}% 
+		}{2.4ex}}%
+	\stackon[-6.9pt]{#1}{\tmpbox}%
+}
+\parskip 1ex
+
+%calligraphy packages
+\usepackage{calrsfs}
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+\newcommand{\Ca}{\pazocal{C}}
+\newcommand{\Oa}{\pazocal{O}}
+\newcommand{\Va}{\pazocal{V}}
+\newcommand{\Ua}{\pazocal{U}}
+\newcommand{\Aa}{\pazocal{A}}
+\newcommand{\Ta}{\pazocal{T}}
+\newcommand{\La}{\pazocal{L}}
+
+\newcommand{\Ja}{\pazocal{J}}
+
+\graphicspath{{./figures/}}
+\usepackage{float}
+
+\title{\LARGE \bf
+Decentralised Market-Based Strategy for Cooperative Multi-Robot Exploration 
+}
+\author{Ana Batinovi\'{c}, Juraj Or\v{s}uli\'{c}, Tamara Petrovi\'{c}, Stjepan Bogdan
+	\thanks{Authors are with the University of Zagreb, Faculty of Electrical Engineering  and Computing, LARICS Laboratory for Robotics and Intelligent Control Systems, Unska 3, 10000 Zagreb, Croatia
+        {\tt\small (ana.batinovic, juraj.orsulic, tamara.petrovic, stjepan.bogdan) at fer.hr}}}
+
+\makeatletter
+\newcommand{\removelatexerror}{\let\@latex@error\@gobble}
+\newcommand{\mb}[1]{\boldsymbol{#1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\makeatother
+
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+
+This work presents a novel approach to autonomous decentralised multi-robot frontier exploration and mapping of an unknown area based on the market model. The exploration algorithm enables mobile robots to communicate among each other, to negotiate and to become dispersed throughout the environment. The mobile robot team simultaneously explores the environment, discovers frontier points (points on the border between the explored and unexplored space), and negotiates by fully connected graph and event-based communication. During the negotiation process, the amount of information exchanged between the robots is limited to data about the frontier points. The main goal is to allocate the mobile robots to target frontier points in the environment in a way which minimises the overall exploration time. The proposed strategy has been implemented in a simulation environment and compared with a centralised strategy. The simulation results demonstrate improved behaviour of the decentralised multi-robot strategy in terms of total exploration time and path length. 
+
+\end{abstract}
+\input{Content/introduction.tex}
+\input{Content/related_work.tex}
+\input{Content/approach.tex}
+\input{Content/simulation_result.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{CONCLUSION AND FUTURE WORK}
+We have presented an approach to autonomous decentralised multi-robot exploration and mapping based on the market model. This strategy has demonstrated improved behaviour compared to the centralised strategy that explicitly coordinates the robots, based on estimates of expected information gain and the cost of exploration. This includes both reduced total exploration time and path length per robot.
+
+However, the approach described in this paper is limited in two aspects. First, in this work the filter module reduces the number of the frontier points by removing the points that are too close to each other. We are investigating improved frontier point filtering and clustering, which we believe will improve overall performance significantly. And second, all mobile robots communicate to each other and create a fully connected graph. If the communication range is limited and it is assumed that just the mobile robots close to each other can communicate and negotiate, coordinated exploration can still be performed, trading off quality of coordination for smaller required communication bandwidth.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+                                  % on the last page of the document manually. It shortens
+                                  % the textheight of the last page by a suitable amount.
+                                  % This command does not take effect until the next page
+                                  % so it should come on the page before the last. Make
+                                  % sure that you do not shorten the textheight too much.
+\nocite{*}
+\bibliographystyle{ieeetr}
+\bibliography{Bibliography/decentralized}
+
+\end{document}
