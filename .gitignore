@@ -1,0 +1,11 @@
+*.soc
+*.aux
+*.log
+*.toc
+*.blg
+*.soc
+*.gz
+*.out
+*.bb
+*.dvi
+*.bbl
