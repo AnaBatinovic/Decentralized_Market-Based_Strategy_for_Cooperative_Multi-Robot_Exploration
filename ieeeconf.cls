@@ -659,38 +659,8 @@
 %
 %
 %
-\usepackage{graphicx}
-\usepackage{array}
-\usepackage{booktabs}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{pifont}
-\usepackage{tikz}
-\usepackage{mathtools}
-\usepackage{fancyhdr}
-\usepackage{pst-node, auto-pst-pdf}
-\usepackage{colortbl}
-\usepackage{amsmath,stackengine}
-\usepackage{blkarray, bigstrut}
-\usepackage{mathpazo}
-\usepackage{helvet}
-\usepackage[english, croatian]{babel}
-\usepackage{dblfloatfix}
-\usepackage{multicol}
-\usepackage{stfloats}
-\usepackage{caption}
-\usepackage[tight,footnotesize]{subfigure}
-\usepackage{enumitem}
-%\usepackage{subfig}
-
-\usepackage[keeplastbox]{flushend}
-
-
-
-%\usepackage{subcaption}
-%\usepackage{float}
-
-
+%Additional packages
+\usepackage{mathptmx}
 
 \ProvidesClass{ieeeconf}[2004/1/15 revision V1.6b by Pradeep Misra]
 %\ProvidesClass{IEEEtran}[2002/11/18 revision V1.6b by Michael Shell]
@@ -819,11 +789,6 @@
 \renewcommand{\sfdefault}{phv}
 \renewcommand{\rmdefault}{ptm}
 \renewcommand{\ttdefault}{pcr}
-\renewcommand{\thesubfigure{{\thefigure.\arabic{subfigure}}
-\makeatletter
-\renewcommand{\p@subfigure}{}
-\renewcommand{\@thesubfigure}{\thesubfigure:\hskip\subfiglabelskip}
-\makeatother
 % enable Times now - so that all class options can see the correct font families
 \normalfont\selectfont
 
@@ -2027,8 +1992,8 @@
 \fi
 
 % article class provides these, we should too.
-%\newlength\abovecaptionskip
-%\newlength\belowcaptionskip
+\newlength\abovecaptionskip
+\newlength\belowcaptionskip
 % but only \abovecaptionskip is used above figure captions and *below* table
 % captions
 \setlength\abovecaptionskip{0.5\baselineskip}
