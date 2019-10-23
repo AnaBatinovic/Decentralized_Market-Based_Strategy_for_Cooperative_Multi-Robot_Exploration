@@ -659,10 +659,7 @@
 %
 %
 %
-%Additional packages
-\usepackage{mathptmx}
-
-\ProvidesClass{ieeeconf}[2004/1/15 revision V1.6b by Pradeep Misra]
+%Class{ieeeconf}[2004/1/15 revision V1.6b by Pradeep Misra]
 %\ProvidesClass{IEEEtran}[2002/11/18 revision V1.6b by Michael Shell]
 %\typeout{-- See the "IEEEtran_HOWTO" manual for usage information.}
 %\typeout{-- The source comments contain changelog notes.}

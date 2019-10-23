@@ -38,13 +38,13 @@
 \usepackage{microtype}				% Improves spacing
 
 \usepackage{subfig}
+\usepackage{subcaption}
 
 \usepackage{tabularx}
 \usepackage{booktabs}
 %\newcolumntype{C}{>{\centering\arraybackslash}X} % centered version of "X" type
 \setlength{\extrarowheight}{1pt}
 \usepackage{enumerate}				% Additional options for listing of items in enumerate environment
-\usepackage{algorithm2e}			% Writing pseudo-code
 \usepackage{todonotes}				% Adding todo items
 \usepackage{dirtree}					% Simple display of directory tree
 \usepackage{hyperref}					% Managing cross-referencing
@@ -66,6 +66,34 @@
 }
 \parskip 1ex
 
+%Additional packages
+\usepackage{mathptmx}
+\usepackage{graphicx, subcaption}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\usepackage{cleveref}
+\renewcommand{\algorithmautorefname}{Algorithm}
+\SetKwInput{KwPersistent}{Persistent variables}
+\SetKwInput{KwLocal}{Local variable initializations}
+\SetArgSty{textnormal}
+\makeatletter
+\newcommand{\nosemic}{\renewcommand{\@endalgocfline}{\relax}}% Drop semi-colon ;
+\newcommand{\dosemic}{\renewcommand{\@endalgocfline}{\algocf@endline}}% Reinstate semi-colon ;
+\newcommand{\pushline}{\Indp}% Indent
+\newcommand{\popline}{\Indm\dosemic}% Undent
+%\let\oldnl\nl% Store \nl in \oldnl
+%\newcommand{\nonl}{\renewcommand{\nl}{\let\nl\oldnl}}% Remove line number for one line
+%\newcounter{algoline}
+%\newcommand\Numberline{\refstepcounter{algoline}\nlset{\thealgoline}}
+%\AtBeginEnvironment{algorithm}{\setcounter{algoline}{0}}
+\makeatother
+
+\makeatletter
+\newcommand{\removelatexerror}{\let\@latex@error\@gobble}
+\makeatother
+
+
 %calligraphy packages
 \usepackage{calrsfs}
 \DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
@@ -83,7 +111,7 @@
 \usepackage{float}
 
 \title{\LARGE \bf
-Decentralised Market-Based Strategy for Cooperative Multi-Robot Exploration 
+Decentralized Strategy for Cooperative Multi-Robot Exploration and Mapping
 }
 \author{Ana Batinovi\'{c}, Juraj Or\v{s}uli\'{c}, Tamara Petrovi\'{c}, Stjepan Bogdan
 	\thanks{Authors are with the University of Zagreb, Faculty of Electrical Engineering  and Computing, LARICS Laboratory for Robotics and Intelligent Control Systems, Unska 3, 10000 Zagreb, Croatia
@@ -106,19 +134,19 @@ Decentralised Market-Based Strategy for Cooperative Multi-Robot Exploration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 
-This work presents a novel approach to autonomous decentralised multi-robot frontier exploration and mapping of an unknown area based on the market model. The exploration algorithm enables mobile robots to communicate among each other, to negotiate and to become dispersed throughout the environment. The mobile robot team simultaneously explores the environment, discovers frontier points (points on the border between the explored and unexplored space), and negotiates by fully connected graph and event-based communication. During the negotiation process, the amount of information exchanged between the robots is limited to data about the frontier points. The main goal is to allocate the mobile robots to target frontier points in the environment in a way which minimises the overall exploration time. The proposed strategy has been implemented in a simulation environment and compared with a centralised strategy. The simulation results demonstrate improved behaviour of the decentralised multi-robot strategy in terms of total exploration time and path length. 
+This work presents a novel approach to autonomous decentralized multi-robot frontier exploration and mapping of an unknown area.  The mobile robot team simultaneously explores the environment, discovers frontier points (points on the border between the explored and unexplored space), and communicates by fully connected graph and event-based communication in order to become dispersed throughout the environment. During the exploration, the amount of information exchanged between the robots is limited to data about the robot positions and their current target points. The main goal is to allocate the mobile robots to target frontier points in the environment in a way which minimises the overall exploration time. Moreover, mobile robots creates common map of the environment. The proposed strategy has been implemented in a simulation environment and compared with a coordinated exploration strategy. The simulation results demonstrate the effectiveness of the proposed decentralized multi-robot strategy.
 
 \end{abstract}
 \input{Content/introduction.tex}
-\input{Content/related_work.tex}
-\input{Content/approach.tex}
+\input{Content/exploration_and_mapping_overview.tex}
+\input{Content/strategy_description.tex}
 \input{Content/simulation_result.tex}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{CONCLUSION AND FUTURE WORK}
-We have presented an approach to autonomous decentralised multi-robot exploration and mapping based on the market model. This strategy has demonstrated improved behaviour compared to the centralised strategy that explicitly coordinates the robots, based on estimates of expected information gain and the cost of exploration. This includes both reduced total exploration time and path length per robot.
+We have presented a modular approach to autonomous decentralized multi-robot exploration and  mapping which is, besides, not restricted to Google Cartographer SLAM and dense frontier detection. This strategy has demonstrated improved behaviour compared to the coordinated Burgard's strategy in term of exploration time. Another contribution of this work is a repository (available on Github\footnote{\href{https://github.com/larics/decentralized_multi_robot_exploration}{https://github.com/larics/decentralized\_multi\_robot\_exploration}}) that includes developed and implemented decentralized multi-robot exploration strategy as well as our implementation of the Burgard's algorithm. 
 
-However, the approach described in this paper is limited in two aspects. First, in this work the filter module reduces the number of the frontier points by removing the points that are too close to each other. We are investigating improved frontier point filtering and clustering, which we believe will improve overall performance significantly. And second, all mobile robots communicate to each other and create a fully connected graph. If the communication range is limited and it is assumed that just the mobile robots close to each other can communicate and negotiate, coordinated exploration can still be performed, trading off quality of coordination for smaller required communication bandwidth.
+Despite these encouraging results, there are several aspects which could be improved. One of the interesting research direction is to consider decentralized map creating and complex data sharing. Also, an improvement can be a simpler simulator with more mobile robots, which we believe will approve better behaviour of our decentralized strategy over coordinated Burgard's strategy. Another direction can be an extension of the algorithm to cope with a limited communication range of the mobile robots, which will probably improve overall performance. Additionally, we want to investigate scenarios in which the robots may malfunction or break or in which the environment changes over time.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
